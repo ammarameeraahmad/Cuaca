@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, DM_Mono } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 
-const plusJakarta = Plus_Jakarta_Sans({
+const poppins = Poppins({
   variable: "--font-sans",
   subsets: ["latin"],
-});
-
-const dmMono = DM_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -25,10 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${plusJakarta.variable} ${dmMono.variable} h-full antialiased`}
+      lang="id"
+      className={`${poppins.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]">
+      <body className="min-h-full flex flex-col bg-white text-gray-900">
         {children}
       </body>
     </html>
