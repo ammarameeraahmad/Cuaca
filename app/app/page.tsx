@@ -3,15 +3,19 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import HeroSection from "../components/HeroSection";
-import WeatherSection from "../components/WeatherSection";
+import WeatherSectionNew from "../components/WeatherSectionNew";
+import PestSection from "../components/PestSection";
 import AISection from "../components/AISection";
 import ReportSection from "../components/ReportSection";
 import Footer from "../components/Footer";
-import { CITIES, DEFAULT_ADM4, type City } from "../data/cities";
+import { ADM4_CITIES, type ADM4Location, DEFAULT_ADM4 } from "../data/adm4-cities";
 import { useBMKG } from "../hooks/useBMKG";
 
 export default function Home() {
-  const [selectedCity, setSelectedCity] = useState<City>(() => CITIES.find((city) => city.adm4 === DEFAULT_ADM4) ?? CITIES[0]);
+  const [selectedCity, setSelectedCity] = useState<ADM4Location>(() => {
+    const found = ADM4_CITIES.find((city) => city.adm4 === DEFAULT_ADM4);
+    return found || ADM4_CITIES[0];
+  });
   const [activeSection, setActiveSection] = useState("home");
   const { data, forecast, loading, error, source, fetchWeather } = useBMKG();
 
@@ -53,7 +57,7 @@ export default function Home() {
       <Navbar activeSection={activeSection} onNavigate={scrollToSection} />
       <main>
         <HeroSection onNavigate={scrollToSection} />
-        <WeatherSection
+        <WeatherSectionNew
           selectedCity={selectedCity}
           onSelectCity={setSelectedCity}
           loading={loading}
@@ -61,9 +65,10 @@ export default function Home() {
           data={data}
           forecast={forecast}
           source={source}
-          onNavigate={scrollToSection}
+            onNavigate={scrollToSection}
         />
-        <AISection cityLabel={`${selectedCity.name}, ${selectedCity.prov}`} forecastTitle={forecastSummary} forecastSubtitle={forecastDetails} />
+        <PestSection />
+        <AISection cityLabel={selectedCity.name} forecastTitle={forecastSummary} forecastSubtitle={forecastDetails} />
         <ReportSection />
       </main>
       <Footer />

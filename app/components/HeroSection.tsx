@@ -16,10 +16,35 @@ const stats = [
 
 export default function HeroSection({ onNavigate }: HeroSectionProps) {
   const [currentStat, setCurrentStat] = useState(0);
-  const [clock, setClock] = useState(new Date());
+  const [clock, setClock] = useState<string | null>(null);
 
   useEffect(() => {
-    const timer = setInterval(() => setClock(new Date()), 1000);
+    // Set initial clock on client only to prevent hydration mismatch
+    setClock(
+      new Date().toLocaleString("id-ID", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      })
+    );
+
+    const timer = setInterval(() => {
+      setClock(
+        new Date().toLocaleString("id-ID", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        })
+      );
+    }, 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -28,15 +53,17 @@ export default function HeroSection({ onNavigate }: HeroSectionProps) {
     return () => clearInterval(timer);
   }, []);
 
-  const formattedClock = clock.toLocaleString("id-ID", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
+  if (!clock) {
+    return (
+      <section id="home" className="relative overflow-hidden pt-24 lg:pt-28">
+        <div className="absolute inset-0 -z-10">
+          <img src="/images/hero-bg.jpg" alt="Lahan pertanian" className="h-full w-full object-cover opacity-35" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(245,250,242,0.92)_0%,rgba(243,247,239,0.84)_48%,rgba(243,247,239,1)_100%)]" />
+        </div>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 lg:pb-20 h-96" />
+      </section>
+    );
+  }
 
   return (
     <section id="home" className="relative overflow-hidden pt-24 lg:pt-28">
@@ -97,7 +124,7 @@ export default function HeroSection({ onNavigate }: HeroSectionProps) {
             <div className="mt-8 inline-flex items-center gap-3 rounded-2xl glass-card-strong px-4 py-3 text-sm text-[var(--foreground)]/70 soft-shadow">
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
               <span className="font-mono text-xs uppercase tracking-[0.22em] text-emerald-700">Waktu lokal</span>
-              <span>{formattedClock} WIB</span>
+              <span>{clock} WIB</span>
             </div>
           </div>
 
