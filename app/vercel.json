@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "env": {
+    "NEXT_PUBLIC_APP_NAME": "@CuacaKita AI",
+    "NEXT_PUBLIC_DEFAULT_ADM4": "@34.04.13.2001",
+    "BMKG_API_BASE_URL": "@https://api.bmkg.go.id/publik/prakiraan-cuaca",
+    "BMKG_TIMEOUT_MS": "@8000"
+  }
+}
